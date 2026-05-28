@@ -24,7 +24,13 @@ COPY --from=build /app/package.json ./
 
 ARG PG_VERSION='17'
 
-RUN apt-get update && apt-get install -y postgresql-client-${PG_VERSION}
+RUN apt-get update && \
+    apt-get install -y curl gnupg && \
+    curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
+    echo "deb http://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+    apt-get update && \
+    apt-get install -y postgresql-client-18
+
 
 CMD pg_isready --dbname=$BACKUP_DATABASE_URL && \
     pg_dump --version && \
