@@ -24,7 +24,7 @@ COPY --from=build /app/package.json ./
 
 ARG PG_VERSION='17'
 
-RUN RUN apt-get update && apt-get install -y postgresql-client-${PG_VERSION}
+RUN apt-get update && apt-get install -y postgresql-client-${PG_VERSION}
 
 CMD pg_isready --dbname=$BACKUP_DATABASE_URL && \
     pg_dump --version && \
